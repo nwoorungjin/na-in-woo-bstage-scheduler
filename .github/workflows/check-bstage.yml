@@ -1,0 +1,23 @@
+
+name: Check Bstage Updates
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+jobs:
+  check-updates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Import new Bstage posts
+        run: |
+          curl --fail-with-body --silent --show-error \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            "https://na-in-woo-philippines.vercel.app/api/cron/check-bstage"
+
+      - name: Translate pending posts
+        run: |
+          curl --fail-with-body --silent --show-error \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            "https://na-in-woo-philippines.vercel.app/api/cron/translate-pending"
