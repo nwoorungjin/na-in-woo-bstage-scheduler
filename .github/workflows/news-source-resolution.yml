@@ -1,0 +1,19 @@
+
+name: Test News Source Resolution
+
+on:
+  workflow_dispatch:
+
+jobs:
+  resolve:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test original publisher links
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          curl --fail-with-body --silent --show-error \
+            --max-time 90 \
+            -H "Authorization: Bearer $CRON_SECRET" \
+            "https://na-in-woo-philippines.vercel.app/api/cron/resolve-news-sources" \
+            | python3 -m json.tool
