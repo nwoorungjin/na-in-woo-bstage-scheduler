@@ -14,5 +14,5 @@ jobs:
         run: |
           curl --fail-with-body --show-error --silent \
             -H "Authorization: Bearer $CRON_SECRET" \
-            "https://na-in-woo-philippines.vercel.app/api/cron/diagnose-soompi"
+            "https://na-in-woo-philippines.vercel.app/api/cron/discover-news"
           echo
