@@ -1,0 +1,20 @@
+
+name: Discover Na In Woo News
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *"
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Import news articles
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          curl --fail-with-body --show-error --silent \
+            --retry 2 \
+            -H "Authorization: Bearer $CRON_SECRET" \
+            "https://na-in-woo-philippines.vercel.app/api/cron/discover-news"
