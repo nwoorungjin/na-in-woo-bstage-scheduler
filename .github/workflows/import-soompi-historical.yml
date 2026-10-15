@@ -1,0 +1,40 @@
+name: Import 9 Soompi Articles as Pending
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: 'Choose IMPORT to insert only new articles as Pending'
+        required: true
+        type: choice
+        options:
+          - PREVIEW_ONLY
+          - IMPORT
+        default: PREVIEW_ONLY
+
+permissions:
+  contents: read
+
+jobs:
+  historical-news:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Read-only preview
+        if: ${{ inputs.confirmation == 'PREVIEW_ONLY' }}
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          curl --fail-with-body --silent --show-error --max-time 90 \
+            -H "Authorization: Bearer ${CRON_SECRET}" \
+            "https://na-in-woo-philippines.vercel.app/api/cron/discover-news"
+      - name: Import as Pending only
+        if: ${{ inputs.confirmation == 'IMPORT' }}
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          curl --fail-with-body --silent --show-error --max-time 90 \
+            -X POST \
+            -H "Authorization: Bearer ${CRON_SECRET}" \
+            -H "x-confirm-historical-import: IMPORT_9_SOOMPI_PENDING" \
+            "https://na-in-woo-philippines.vercel.app/api/cron/discover-news?mode=import"
