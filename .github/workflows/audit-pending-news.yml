@@ -1,0 +1,18 @@
+
+name: Audit Pending News
+
+on:
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check pending news
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          curl --fail-with-body --silent --show-error \
+            -H "Authorization: Bearer $CRON_SECRET" \
+            "https://na-in-woo-philippines.vercel.app/api/cron/audit-pending-news" \
+            | python3 -m json.tool
