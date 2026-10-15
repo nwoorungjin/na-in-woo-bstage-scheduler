@@ -1,0 +1,21 @@
+
+name: Backfill Na In Woo News Images
+
+on:
+  workflow_dispatch:
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Backfill image metadata in batches
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          for start in 0 6 12 18 24 30 36 42 48 54 60 66; do
+            echo "Checking batch starting at $start"
+            curl --fail-with-body --show-error --silent \
+              -H "Authorization: Bearer $CRON_SECRET" \
+              "https://na-in-woo-philippines.vercel.app/api/cron/backfill-news-images?start=$start&batch=6"
+            echo
+          done
