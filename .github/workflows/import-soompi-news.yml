@@ -13,5 +13,5 @@ jobs:
         run: |
           curl --fail-with-body --silent --show-error --max-time 90 \
             -H "Authorization: Bearer $CRON_SECRET" \
-            "https://na-in-woo-philippines.vercel.app/api/cron/import-soompi-news?mode=preview" \
+            "https://na-in-woo-philippines.vercel.app/api/cron/import-soompi-news?mode=import" \
             | python3 -m json.tool
