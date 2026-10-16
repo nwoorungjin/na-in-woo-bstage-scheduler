@@ -2,8 +2,6 @@ name: Import Soompi News to Pending
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "17 */6 * * *"
 
 jobs:
   import:
