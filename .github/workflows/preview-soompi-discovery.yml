@@ -1,0 +1,17 @@
+name: Preview Soompi Discovery
+
+on:
+  workflow_dispatch:
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Probe Soompi discovery sources (read only)
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          curl --fail-with-body --silent --show-error --max-time 90 \
+            -H "Authorization: Bearer $CRON_SECRET" \
+            "https://na-in-woo-philippines.vercel.app/api/cron/preview-soompi-discovery" \
+            | python3 -m json.tool
