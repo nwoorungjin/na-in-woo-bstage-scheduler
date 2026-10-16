@@ -1,0 +1,19 @@
+name: Import Soompi News to Pending
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 */6 * * *"
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Discover and import verified Soompi articles as Pending
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          curl --fail-with-body --silent --show-error --max-time 90 \
+            -H "Authorization: Bearer $CRON_SECRET" \
+            "https://na-in-woo-philippines.vercel.app/api/cron/import-soompi-news?mode=import" \
+            | python3 -m json.tool
